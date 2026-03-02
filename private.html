@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>Private Sessions — 18+ Intimate Massage</title>
+    <link rel="stylesheet" href="css/styles.css">
+    <meta name="description" content="Exclusive adult-only massage sessions for women seeking a private, intimate and respectful experience. Clients must be 18 or older." />
+  </head>
+  <body>
+    <header class="site-header">
+      <div class="wrap">
+        <div>
+          <h1 class="brand">Kenz Massage &amp; Wellness</h1>
+          <p class="tagline">Professional Therapeutic Massage</p>
+        </div>
+        <nav class="nav">
+          <a href="index.html" class="nav-link">Home</a>
+          <a href="services.html" class="nav-link">Services</a>
+          <a href="contact.html" class="nav-link">Contact</a>
+          <a href="quote.html" class="nav-link">Quote</a>
+          <a href="private.html" class="nav-link">Private</a>
+          <span id="cartCount" class="cart-count">0</span>
+        </nav>
+      </div>
+    </header>
+
+    <main class="wrap" style="padding-top:22px">
+      <section class="card">
+        <h2 style="margin-top:0">18+ Private Massage</h2>
+        <p class="muted">We offer exclusive, one‑on‑one massage sessions designed specifically for adults. These experiences are intended for women seeking a quiet, intimate atmosphere with professionally trained therapists. All clients must be at least 18 years of age; ID verification is required at booking.</p>
+
+        <h3 style="margin-top:24px">What You Can Expect</h3>
+        <ul style="color:var(--muted); line-height:1.8">
+          <li>Discreet, private treatment rooms with soft lighting and calming music.</li>
+          <li>Therapists skilled in creating a comfortable, respectful environment.</li>
+          <li>Personalized pressure and technique to promote deep relaxation and connection.</li>
+          <li>A focus on relaxation, stress relief, and emotional wellbeing.</li>
+          <li>Strict confidentiality and boundaries maintained at all times.</li>
+        </ul>
+
+        <h3 style="margin-top:24px">Age & Gender Guidelines</h3>
+        <p>These sessions are reserved for adults (18+) and are primarily tailored toward female clients. We require a valid ID upon arrival and encourage open communication about comfort levels before the session begins.</p>
+
+        <h3 style="margin-top:24px">Booking & Contact</h3>
+        <p>To schedule a private session or ask questions, please <a href="contact.html">contact us</a> or call our studio. Walk-ins are not available for these services; appointments must be made in advance.</p>
+
+        <p class="muted" style="margin-top:16px; font-size:13px">Kenz Massage &amp; Wellness upholds a professional code of conduct. Any behaviour that compromises the safety or dignity of our staff or clients will result in termination of the session without refund.</p>
+      </section>
+    </main>
+
+    <footer class="site-footer">
+      <div class="wrap muted">© <span id="year"></span> Kenz Massage &amp; Wellness</div>
+    </footer>
+
+    <script>
+      document.getElementById('year').textContent = new Date().getFullYear();
+      function updateCartCount(){ try{ const cart=JSON.parse(localStorage.getItem('km_cart')||'{}'); let c=0; Object.values(cart).forEach(v=>c+=v.qty||0); document.getElementById('cartCount').textContent=c }catch(e){document.getElementById('cartCount').textContent='0'} }
+      updateCartCount(); window.addEventListener('storage', updateCartCount);
+
+      // highlight active link
+      (function(){
+        const path = window.location.pathname.split('/').pop();
+        document.querySelectorAll('.nav-link').forEach(l=>{
+          if(l.getAttribute('href')===path) l.classList.add('active');
+        });
+      })();
+    </script>
+  </body>
+</html>
