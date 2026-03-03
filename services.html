@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>Services — Kenz Massage &amp; Wellness</title>
+    <link rel="stylesheet" href="styles.css">
+    <meta name="description" content="View professional massage services offered by Kenz Massage & Wellness. Choose from Swedish, deep tissue, sports, couples and more, then generate a custom quote.">
+  </head>
+  <body>
+    <header class="site-header">
+      <div class="wrap">
+        <div>
+          <h1 class="brand">Kenz Massage &amp; Wellness</h1>
+          <p class="tagline">Professional Therapeutic Massage</p>
+        </div>
+        <nav class="nav">
+          <a href="index.html" class="nav-link">Home</a>
+          <a href="services.html" class="nav-link">Services</a>
+          <a href="contact.html" class="nav-link">Contact</a>
+          <a href="quote.html" class="nav-link">Quote</a>
+         
+        </nav>
+      </div>
+    </header>
+
+    <main class="wrap" style="padding-top:22px">
+      <div class="grid">
+        <section class="card">
+          <h2 style="margin-top:0">Available Massages</h2>
+          <p class="muted">Select treatments and build a custom quote. No payment is required on this site; view totals on the Quote page.</p>
+          <div id="services" class="services" aria-live="polite"></div>
+        </section>
+
+        <aside class="card">
+          <h3 style="margin-top:0">Your Quote</h3>
+          <div id="cart" class="cart-list"></div>
+          <div class="totals"><div class="muted">Subtotal</div><div id="subtotal">$0.00</div></div>
+          <div class="totals"><div class="muted">Tax (6%)</div><div id="tax">$0.00</div></div>
+          <div class="totals" style="font-weight:600;margin-top:6px"><div>Total</div><div id="total">$0.00</div></div>
+          <div style="margin-top:12px; display:flex; gap:8px"><a class="btn" href="quote.html">View Quote</a><button id="clearBtn" class="btn secondary">Clear Quote</button></div>
+        </aside>
+      </div>
+    </main>
+
+<footer class="site-footer"><div class="wrap muted">© <span id="year"></span> Kenz Massage &amp; Wellness</div>
+<span style="letter-spacing: 1px;">&copy;ENGINEERED </span>
+        <a href="https://alvinkill.github.io/portfolio/" target="_blank"
+            style="color: gold; text-decoration:none; font-weight:100"> AND PROGRAMMED BY ROSEAN-X.</a></p>
+</footer>
+
+    <script>
+      document.getElementById('year').textContent = new Date().getFullYear();
+
+      // highlight active nav link
+      (function(){
+        const path = window.location.pathname.split('/').pop();
+        document.querySelectorAll('.nav-link').forEach(l=>{
+          if(l.getAttribute('href')===path) l.classList.add('active');
+        });
+      })();
+
+      const SERVICES = [
+        {id: 'swedish', name: 'Swedish Massage', duration: '60 min', price: 60, desc: 'Gentle full-body relaxation.', image: 'place.webp'},
+        {id: 'deep', name: 'Deep Tissue Massage', duration: '60 min', price: 85, desc: 'Targets deeper muscle tension.', image: 'place2.webp'},
+        {id: 'hotstone', name: 'Private Massage', duration: '75 min', price: 95, desc: 'Private Massage.', image: 'place3.webp'},
+        {id: 'aroma', name: 'Aromatherapy Massage', duration: '60 min', price: 75, desc: 'Essential oils with gentle strokes.', image: 'place4.webp'},
+        {id: 'sports', name: 'Sports Massage', duration: '45 min', price: 55, desc: 'Focused on areas stressed by activity.', image: 'place5.webp'},
+        {id: 'couples', name: 'Couples Massage', duration: '60 min', price: 120, desc: 'Side-by-side for two.', image: 'place6.webp'}
+      ];
+
+      // cart stored as object in localStorage under 'km_cart'
+      function loadCart(){ try{return JSON.parse(localStorage.getItem('km_cart')||'{}')}catch(e){return {}} }
+      function saveCart(cart){ localStorage.setItem('km_cart', JSON.stringify(cart)); updateCartCount(); }
+
+      function updateCartCount(){ const cart=loadCart(); let c=0; Object.values(cart).forEach(v=>c+=v.qty||0); document.getElementById('cartCount').textContent=c }
+
+      function money(n){return '$'+n.toFixed(2)}
+
+      function renderServices(){ const wrap=document.getElementById('services'); wrap.innerHTML=''; SERVICES.forEach(s=>{ const el=document.createElement('div'); el.className='service'; el.innerHTML=`<img src="${s.image}" alt="${s.name}" style="width:100%;height:150px;object-fit:cover;border-radius:8px;margin-bottom:12px"><h3>${s.name}</h3><p class="muted">${s.duration} • ${s.desc}</p><div class="meta"><strong>${money(s.price)}</strong><div><button class="btn small" data-id="${s.id}">Add</button></div></div>`; wrap.appendChild(el); }); wrap.addEventListener('click', e=>{ const b=e.target.closest('button[data-id]'); if(!b) return; addToCart(b.dataset.id); }); }
+
+      function addToCart(id){ const svc = SERVICES.find(s=>s.id===id); if(!svc) return; const cart=loadCart(); if(!cart[id]) cart[id]={item:svc, qty:0}; cart[id].qty +=1; saveCart(cart); renderCart(); }
+
+      function changeQty(id, delta){ const cart=loadCart(); if(!cart[id]) return; cart[id].qty += delta; if(cart[id].qty<=0) delete cart[id]; saveCart(cart); renderCart(); }
+
+      function removeItem(id){ const cart=loadCart(); delete cart[id]; saveCart(cart); renderCart(); }
+
+      function renderCart(){ const container=document.getElementById('cart'); container.innerHTML=''; const cart=loadCart(); let subtotal=0; if(Object.keys(cart).length===0){ container.innerHTML='<div class="muted">Quote is empty.</div>' } for(const id in cart){ const e=cart[id]; subtotal += e.qty*e.item.price; const row=document.createElement('div'); row.className='cart-item'; row.innerHTML=`<div><strong>${e.item.name}</strong><div class="muted">${e.item.duration}</div></div><div style="text-align:right"><div>${money(e.item.price)} × ${e.qty}</div><div style="margin-top:6px"><button class="btn secondary" data-act="dec" data-id="${id}">-</button> <button class="btn" data-act="inc" data-id="${id}">+</button> <button class="btn secondary" data-act="rm" data-id="${id}">Remove</button></div></div>`; container.appendChild(row); }
+        const tax = subtotal*0.06; const total = subtotal + tax; document.getElementById('subtotal').textContent=money(subtotal); document.getElementById('tax').textContent=money(tax); document.getElementById('total').textContent=money(total);
+        container.querySelectorAll('button[data-act]').forEach(b=>b.addEventListener('click', ()=>{ const id=b.dataset.id; const act=b.dataset.act; if(act==='dec') changeQty(id,-1); if(act==='inc') changeQty(id,1); if(act==='rm') removeItem(id); })); }
+
+      document.getElementById('clearBtn').addEventListener('click', ()=>{ localStorage.removeItem('km_cart'); renderCart(); updateCartCount(); });
+
+      renderServices(); renderCart(); updateCartCount();
+      window.addEventListener('storage', ()=>{ renderCart(); updateCartCount(); });
+    </script>
+
+   
+  </body>
+</html>
