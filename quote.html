@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>Quote — Seranova Massage &amp; Wellness</title>
+    <link rel="stylesheet" href="styles.css">
+    <meta name="description" content="View and manage your current quote for services at Seranova Massage & Wellness. Adjust quantities or clear selections before booking.">
+  </head>
+  <body>
+    <header class="site-header">
+      <div class="wrap">
+        <div>
+          <h1 class="brand">Seranova Massage &amp; Wellness</h1>
+          <p class="tagline">Professional Therapeutic Massage</p>
+        </div>
+        <nav class="nav">
+          <a href="index.html" class="nav-link">Home</a>
+          <a href="services.html" class="nav-link">Services</a>
+          <a href="contact.html" class="nav-link">Contact</a>
+          <a href="quote.html" class="nav-link">Quote <span id="cartCount" class="cart-count">0</span></a>
+        </nav>
+      </div>
+    </header>
+
+    <main class="wrap" style="padding-top:22px">
+      <section class="card">
+        <h2 style="margin-top:0">Your Quote</h2>
+        <p class="muted">Below is your current quote. When you're ready, click checkout to send your quote details directly to WhatsApp.</p>
+        <div id="cart" class="cart-list"></div>
+        <div class="totals"><div class="muted">Total</div><div id="total">$0.00</div></div>
+        <div style="margin-top:14px; display:flex; gap:10px"><a class="btn" href="services.html">Back to Services</a><button id="checkoutBtn" class="btn">Checkout</button></div>
+      </section>
+    </main>
+
+    <footer class="site-footer">
+  <div class="wrap">
+    <span class="muted">© <span id="year"></span> Kenz Massage &amp; Wellness</span>
+    <br>
+    <span style="letter-spacing:1px;">&copy;ENGINEERED </span>
+    <a href="https://alvinkill.github.io/portfolio/" target="_blank" style="color: gold; text-decoration:none; font-weight:100">AND PROGRAMMED BY ROSEAN-X.</a>
+  </div>
+</footer>
+    <script>
+      document.getElementById('year').textContent = new Date().getFullYear();
+      // highlight active nav link
+      (function(){
+        const path = window.location.pathname.split('/').pop();
+        document.querySelectorAll('.nav-link').forEach(l=>{
+          if(l.getAttribute('href')===path) l.classList.add('active');
+        });
+      })();
+      function loadCart(){ try{return JSON.parse(localStorage.getItem('km_cart')||'{}')}catch(e){return{}} }
+      function saveCart(c){ localStorage.setItem('km_cart', JSON.stringify(c)); updateCartCount(); }
+      function updateCartCount(){ const cart=loadCart(); let c=0; Object.values(cart).forEach(v=>c+=v.qty||0); document.getElementById('cartCount').textContent=c }
+      function money(n){return '$'+n.toFixed(2)}
+
+      function render(){ const container=document.getElementById('cart'); container.innerHTML=''; const cart=loadCart(); if(Object.keys(cart).length===0){ container.innerHTML='<div class="muted">Quote is empty.</div>' }
+        let total=0; for(const id in cart){ const e=cart[id]; total += e.qty*e.item.price; const row=document.createElement('div'); row.className='cart-item'; row.innerHTML=`<div><strong>${e.item.name}</strong><div class="muted">${e.item.duration}</div></div><div style="text-align:right">${money(e.item.price)} × ${e.qty}</div>`; container.appendChild(row); }
+        document.getElementById('total').textContent=money(total);
+      }
+
+      function getWhatsAppUrl(message){
+        // Replace the placeholder number with your real WhatsApp number (in international format, no + or dashes)
+        const base = 'https://wa.me/2347039908412';
+        return `${base}?text=${encodeURIComponent(message)}`;
+      }
+
+      document.getElementById('checkoutBtn').addEventListener('click', ()=>{
+        const cart=loadCart();
+        const ids=Object.keys(cart);
+        if(ids.length===0){
+          alert('Your quote is empty. Add a service before checking out.');
+          return;
+        }
+
+        let message = 'Seranova Massage & Wellness quote';
+        let total = 0;
+        ids.forEach(id=>{
+          const item = cart[id];
+          const lineTotal = item.qty * item.item.price;
+          total += lineTotal;
+          message += ` ${item.item.name} — ${item.qty} × $${item.item.price.toFixed(2)} = $${lineTotal.toFixed(2)} the`;
+        });
+
+        message += ` Total: $${total.toFixed(2)}`;
+        message += ' Please contact me to confirm availability and schedule an appointment.';
+
+        window.open(getWhatsAppUrl(message), '_blank');
+      });
+
+      render(); updateCartCount(); window.addEventListener('storage', ()=>{ render(); updateCartCount(); });
+    </script>
+  </body>
+</html>

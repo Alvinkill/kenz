@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>Private Sessions — 18+ Intimate Massage</title>
+    <link rel="stylesheet" href="styles.css">
+    <meta name="description" content="Exclusive adult-only massage sessions for women seeking a private, intimate and respectful experience. Clients must be 18 or older." />
+  </head>
+  <body>
+    <header class="site-header">
+      <div class="wrap">
+        <div>
+          <h1 class="brand">Seranova Massage &amp; Wellness</h1>
+          <p class="tagline">Professional Therapeutic Massage</p>
+        </div>
+        <nav class="nav">
+          <a href="index.html" class="nav-link">Home</a>
+          <a href="services.html" class="nav-link">Services</a>
+          <a href="contact.html" class="nav-link">Contact</a>
+          <a href="quote.html" class="nav-link">Quote <span id="cartCount" class="cart-count">0</span></a>
+        </nav>
+      </div>
+    </header>
+
+    <main class="wrap" style="padding-top:22px">
+      <section class="card">
+        <h2 style="margin-top:0">Private Sanctuary — 18+ Only</h2>
+        <p class="muted">This dedicated offering is reserved for adults (18+) seeking a serene, discreet massage experience that feels like a private oasis. Each session is designed to be calming, respectful, and tailored to your comfort.</p>
+
+        <h3 style="margin-top:24px">Why Choose the Private Sanctuary?</h3>
+        <ul style="color:var(--muted); line-height:1.8">
+          <li>Exclusive, one‑on‑one sessions in a private studio room.</li>
+          <li>Soft lighting, warm linens, and a soothing aromatherapy profile.</li>
+          <li>Therapists trained to maintain discretion, boundaries and a relaxing rhythm.</li>
+          <li>Age verification and clear communication keep every session safe and comfortable.</li>
+        </ul>
+
+        <h3 style="margin-top:24px">What to Expect</h3>
+        <div style="display:grid; gap:12px; margin-top:12px">
+          <div style="background:rgba(255,255,255,0.15); backdrop-filter:blur(10px); padding:16px; border-radius:10px; border-left:4px solid var(--gold);">
+            <strong style="color:var(--text)">Comfort &amp; Ambience</strong>
+            <p class="muted" style="margin:8px 0 0 0">Soft lighting, gentle music, and premium amenities set the tone for deep relaxation.</p>
+          </div>
+          <div style="background:rgba(255,255,255,0.15); backdrop-filter:blur(10px); padding:16px; border-radius:10px; border-left:4px solid var(--gold);">
+            <strong style="color:var(--text)">Discretion &amp; Respect</strong>
+            <p class="muted" style="margin:8px 0 0 0">Clear boundaries and confidentiality are always upheld. Your comfort comes first.</p>
+          </div>
+          <div style="background:rgba(255,255,255,0.15); backdrop-filter:blur(10px); padding:16px; border-radius:10px; border-left:4px solid var(--gold);">
+            <strong style="color:var(--text)">Personalized Session</strong>
+            <p class="muted" style="margin:8px 0 0 0">You choose the pace, pressure, and focus areas during a pre-session consultation.</p>
+          </div>
+        </div>
+
+        <h3 style="margin-top:24px">Age &amp; Booking Guidelines</h3>
+        <p>All private sessions require guests to be 18 years or older. A valid photo ID is required for booking confirmation. Appointments are by reservation only; walk-ins cannot be accommodated.</p>
+
+        <div style="margin-top:24px; display:flex; gap:12px; flex-wrap:wrap">
+          <a class="btn" href="contact.html">Request a Session</a>
+          <a class="btn secondary" href="quote.html">View Pricing</a>
+        </div>\
+
+        <p class="muted" style="margin-top:18px; font-size:13px">We uphold a professional code of conduct; any behavior that violates safety, consent, or privacy will result in immediate session termination without refund.</p>
+      </section>
+    </main>
+
+    <footer class="site-footer">
+      <div class="wrap">
+        <span class="muted">© <span id="year"></span> Kenz Massage &amp; Wellness</span>
+        <br>
+        <span style="letter-spacing:1px;">&copy;ENGINEERED </span>
+        <a href="https://alvinkill.github.io/portfolio/" target="_blank" style="color: gold; text-decoration:none; font-weight:100">AND PROGRAMMED BY ROSEAN-X.</a>
+      </div>
+    </footer>
+
+    <script>
+      document.getElementById('year').textContent = new Date().getFullYear();
+      function updateCartCount(){ try{ const cart=JSON.parse(localStorage.getItem('km_cart')||'{}'); let c=0; Object.values(cart).forEach(v=>c+=v.qty||0); document.getElementById('cartCount').textContent=c }catch(e){document.getElementById('cartCount').textContent='0'} }
+      updateCartCount(); window.addEventListener('storage', updateCartCount);
+
+      // highlight active link
+      (function(){
+        const path = window.location.pathname.split('/').pop();
+        document.querySelectorAll('.nav-link').forEach(l=>{
+          if(l.getAttribute('href')===path) l.classList.add('active');
+        });
+      })();
+    </script>
+  </body>
+</html>
